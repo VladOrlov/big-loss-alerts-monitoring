@@ -1,0 +1,36 @@
+server:
+  port: 8091
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      client-id: big-loss-alerts-consumer-1
+      group-id: big-loss-alerts-consumer-1
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+        json:
+        trusted:
+        packages: "*"
+
+    template:
+      default-topic: blocking-events
+
+  data:
+    mongodb:
+      uri: "mongodb+srv://admin:jaLnTMcAP65VwhB@kpi.xrcdr.mongodb.net/<dbname>?retryWrites=true&w=majority"
+      database: transactions_monitoring
+
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+
+application:
+  engine-service:
+    data-streaming-delay: "*/1 * * * * *"
